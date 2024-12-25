@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Extend Task</title>
+  </head>
+  <body>
+    <div class="page-container">
+      <h1>Class Extend Task</h1>
+      <h5>Pensioner Checker</h5>
+    </div>
+    <script>
+      // Задача 0. Створити клас Range (діапазон)
+      // Властивості
+      // -  minValue
+      // -  maxValue
+      // Методи
+      // - inRange(value) – метод визначення того, чи є вказане значення у заданому діапазоні
+      // - toString
+
+      class Range {
+        constructor(minValue, maxValue) {
+          this.minValue = minValue;
+          this.maxValue = maxValue;
+        }
+        inRange(value) {
+          return value >= this.minValue && value <= this.maxValue;
+        }
+        toString() {
+          return `Range: ${this.minValue}- ${this.maxValue}`;
+        }
+      }
+
+      //-------------------------------------------------
+
+      // На основі класу Range створити клас PensionerChecker
+      // Властивості
+      // - minValue – мінімальний вік пенсіонера
+      // - maxValue – максимальний вік
+      // Методи
+      // - isPensioner(age) – метод визначення того, чи є пенсіонером
+      // - render(containerID) – метод виведення розмітки
+      // ToString
+
+      class PensionerChecker extends Range {
+        constructor(minPensionerAge = 65) {
+          super(minPensionerAge, Infinity);
+        }
+        isPensioner(age) {
+          //не обов'язково використовувати super для метода. class PensionerChecker є розширенням клусу Range,
+          // а отже використовує його контекст
+          return this.inRange(age);
+          console.log(age);
+        }
+        toString() {
+          return `Range: ${this.minValue}- ${this.maxValue}`;
+        }
+
+        checkAge() {
+          const age = parseInt(this.input.value);
+          const resultRender = document.querySelector(".result");
+          if (this.isPensioner(age)) {
+            resultRender.innerText = "Yes, you are";
+          } else resultRender.innerText = "No, you are not";
+          console.log(resultRender);
+        }
+
+        render() {
+          const pageContainer = document.querySelector(".page-container");
+
+          const container = document.createElement("div");
+          container.className = "input-container";
+
+          const label = document.createElement("label");
+          label.innerText = "Enter Your Age: ";
+
+          this.input = document.createElement("input");
+          this.input.setAttribute("type", "number");
+          label.append(this.input);
+
+          container.append(label);
+
+          const btn = document.createElement("button");
+          btn.innerText = "Check";
+          btn.onclick = this.checkAge.bind(this);
+          container.append(btn);
+
+          pageContainer.append(container);
+
+          const resultContainer = document.createElement("div");
+          resultContainer.className = "result";
+
+          pageContainer.append(resultContainer);
+        }
+      }
+
+      let checker = new PensionerChecker();
+      checker.render();
+      console.log(checker);
+    </script>
+  </body>
+</html>
